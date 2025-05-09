@@ -18,6 +18,7 @@
                 <a href="#projets" class="text-gray-800 hover:text-purple-600 transition">Projets</a>
                 <a href="#competences" class="text-gray-800 hover:text-purple-600 transition">Compétences</a>
                 <a href="#contact" class="text-gray-800 hover:text-purple-600 transition">Contact</a>
+                <a href="{{ route('dashboard') }}" class="text-gray-800 hover:text-purple-600 transition">Dashboard</a>
             </div>
             <div class="md:hidden">
                 <button class="text-gray-800 focus:outline-none">
@@ -42,7 +43,7 @@
             <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">À propos de moi</h2>
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-8 md:mb-0">
-                    <img src="{{ asset('build/assets/no_photo.jpg') }}" alt="Photo de profil" class="rounded-lg shadow-lg mx-auto">
+                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Photo de profil" class="rounded-lg shadow-lg mx-auto">
                 </div>
                 <div class="md:w-1/2 md:pl-12">
                     <p class="text-gray-600 mb-6">
@@ -76,7 +77,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Projet 1 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('build/assets/no_photo.jpg') }}" alt="Projet 1" class="w-full h-48 object-cover">
+                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Projet 1" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Projet E-commerce</h3>
                         <p class="text-gray-600 mb-4">Site web e-commerce développé avec Laravel et Vue.js</p>
@@ -91,7 +92,7 @@
                 
                 <!-- Projet 2 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('build/assets/no_photo.jpg') }}" alt="Projet 2" class="w-full h-48 object-cover">
+                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Projet 2" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Application Mobile</h3>
                         <p class="text-gray-600 mb-4">Application mobile de suivi de fitness avec API Laravel</p>
@@ -106,7 +107,7 @@
                 
                 <!-- Projet 3 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('build/assets/no_photo.jpg') }}" alt="Projet 3" class="w-full h-48 object-cover">
+                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Projet 3" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Blog Personnel</h3>
                         <p class="text-gray-600 mb-4">Blog avec système de gestion de contenu personnalisé</p>
@@ -218,6 +219,23 @@
         </div>
     </section>
 
+    <!-- Section Calculatrice de devis -->
+    <section id="devis" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Calculatrice de devis estimatif</h2>
+        <p class="text-center mb-6 text-gray-600">Sélectionnez les services souhaités :</p>
+
+        <div id="services-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"></div>
+
+        <div class="text-center text-xl font-bold">
+            Total estimé : <span id="total-price">0</span> €
+        </div>
+    </div>
+</section>
+
+
+
+
     <!-- Section Contact -->
     <section id="contact" class="py-20 bg-gray-100">
         <div class="container mx-auto px-6">
@@ -318,6 +336,45 @@
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('services-container');
+    const totalSpan = document.getElementById('total-price');
+    let total = 0;
+
+    fetch('http://portfolio.test/api/services')
+        .then(response => response.json())
+        .then(data => {
+            const services = data.member;
+
+            services.forEach(service => {
+                const div = document.createElement('div');
+                div.className = 'border p-4 rounded-lg shadow hover:shadow-lg transition cursor-pointer bg-white';
+                div.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-800">${service.title}</h3>
+                    <p class="text-gray-600 mb-2">${service.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-purple-600 font-semibold">${service.price} €</span>
+                        <input type="checkbox" class="service-checkbox" data-price="${service.price}">
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            // Gestion des totaux
+            document.querySelectorAll('.service-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const price = parseFloat(checkbox.dataset.price);
+                    total += checkbox.checked ? price : -price;
+                    totalSpan.textContent = total;
+                });
+            });
+        })
+        .catch(error => {
+            container.innerHTML = '<p class="text-red-600">Erreur lors du chargement des services.</p>';
+            console.error(error);
+        });
+});
     </script>
 </body>
 </html>

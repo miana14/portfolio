@@ -7,6 +7,12 @@
         <nav>
             <ul class="space-y-2">
                 <li>
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 {{ request()->routeIs('dashboard') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
+                        <i class="fas fa-table"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 {{ request()->routeIs('admin.dashboard') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Tableau de bord</span>

@@ -1,4 +1,18 @@
 <x-guest-layout>
+    <!-- Barre de navigation Login / Register -->
+    <div class="flex justify-center mb-6">
+        <div class="bg-gray-100 rounded-full p-1 inline-flex space-x-2">
+            <a href="{{ route('login') }}"
+               class="px-4 py-2 rounded-full {{ request()->routeIs('login') ? 'bg-purple-600 text-white' : 'text-gray-600 hover:bg-gray-200' }}">
+                Connexion
+            </a>
+            <a href="{{ route('register') }}"
+               class="px-4 py-2 rounded-full {{ request()->routeIs('register') ? 'bg-purple-600 text-white' : 'text-gray-600 hover:bg-gray-200' }}">
+                Inscription
+            </a>
+        </div>
+    </div>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -15,12 +29,10 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-
             <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
+                          type="password"
+                          name="password"
+                          required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
