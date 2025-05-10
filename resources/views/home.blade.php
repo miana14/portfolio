@@ -200,19 +200,56 @@
 
     <!-- Section Calculatrice de devis -->
     <section id="devis" class="py-20 bg-white">
-    <div class="container mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Calculatrice de devis estimatif</h2>
-        <p class="text-center mb-6 text-gray-600">Sélectionnez les services souhaités :</p>
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Calculatrice de devis estimatif</h2>
+            <p class="text-center mb-6 text-gray-600">Sélectionnez les services souhaités et envoyez votre demande :</p>
 
-        <div id="services-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <!-- Services à gauche -->
+                <div>
+                    <div id="services-container" class="grid grid-cols-1 gap-6 mb-6"></div>
 
-        <div class="text-center text-xl font-bold">
-            Total estimé : <span id="total-price">0</span> €
+                    <div class="text-center text-xl font-bold">
+                        Total estimé : <span id="total-price">0</span> €
+                        <input type="hidden" id="total-hidden" name="total" value="0">
+                    </div>
+                </div>
+
+                <!-- Formulaire à droite -->
+                <form id="estimate-form" class="bg-gray-50 p-6 rounded-lg shadow-md w-full">
+                    @csrf
+                    <input type="hidden" name="services" id="selected-services">
+
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+                        <input type="text" name="name" id="name" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" name="email" id="email" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                        <textarea name="message" id="message" rows="4"
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-purple-500 focus:border-purple-500"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-purple-600 text-white py-3 rounded-lg font-bold hover:bg-purple-700 transition">
+                        Envoyer la demande de devis
+                    </button>
+
+                    <div id="form-response" class="mt-4 text-center text-sm text-green-600 hidden">
+                        Merci ! Votre demande a été envoyée.
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
-
-
+    </section>
 
 
     <!-- Section Contact -->
@@ -316,10 +353,42 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
+    function updateEstimate() {
+            const checked = document.querySelectorAll('.service-checkbox:checked');
+            const serviceIds = Array.from(checked).map(cb => cb.dataset.id);
+
+            fetch('/api/estimate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ services: serviceIds })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.total !== undefined) {
+                    document.getElementById('total-price').innerText =
+                        `${data.total}`
+                } else {
+                    document.getElementById('total-price').innerText = 'Erreur dans la réponse.';
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('total-price').innerText = 'Erreur lors de l’estimation.';
+            });
+        }
+
+    document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('services-container');
     const totalSpan = document.getElementById('total-price');
-    let total = 0;
+
+
+    // Ajouter l'écouteur de clic à chaque checkbox
+    document.querySelectorAll('.service-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('click', updateEstimate);
+    });
 
     fetch('http://portfolio.test/api/services')
         .then(response => response.json())
@@ -334,25 +403,20 @@
                     <p class="text-gray-600 mb-2">${service.description}</p>
                     <div class="flex justify-between items-center">
                         <span class="text-purple-600 font-semibold">${service.price} €</span>
-                        <input type="checkbox" class="service-checkbox" data-price="${service.price}">
+                        <input type="checkbox" class="service-checkbox" onClick="updateEstimate()" name="service-checkbox" data-price="${service.price}" data-id="${service.id}" >
                     </div>
                 `;
                 container.appendChild(div);
             });
 
-            // Gestion des totaux
-            document.querySelectorAll('.service-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', () => {
-                    const price = parseFloat(checkbox.dataset.price);
-                    total += checkbox.checked ? price : -price;
-                    totalSpan.textContent = total;
-                });
-            });
+            
         })
         .catch(error => {
             container.innerHTML = '<p class="text-red-600">Erreur lors du chargement des services.</p>';
             console.error(error);
         });
+
+        
 });
     </script>
 </body>

@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\QuoteRequestController;
+use App\Http\Controllers\FrontQuoteController;
 use App\Http\Controllers\FrontController;
 
 
@@ -24,6 +26,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('/quote-request', [QuoteRequestController::class, 'store'])->name('quote-request.store');
+Route::get('/quote-request', function () {
+    $services = \App\Models\Service::all();
+    return view('quote-request', compact('services'));
+})->name('quote-request.form');
+
+
 // Routes back-office (admin) protégées par auth
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -39,6 +48,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('/quote-requests', [QuoteRequestController::class, 'index'])->name('quote-requests.index');
+
 });
 
 // Authentification : profile général
