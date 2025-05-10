@@ -19,6 +19,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.services.index') }}" class="flex items-center space-x-3 {{ request()->routeIs('admin.services.*') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Services</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.projects.index') }}" class="flex items-center space-x-3 {{ request()->routeIs('admin.projects.*') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
                         <i class="fas fa-project-diagram"></i>
                         <span>Projets</span>

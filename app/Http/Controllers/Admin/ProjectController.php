@@ -2,134 +2,97 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
-    private $projects = [
-        [
-            'id' => 1,
-            'image' => 'https://via.placeholder.com/100x60',
-            'title' => 'Projet E-commerce',
-            'description' => 'Site web e-commerce',
-            'category' => 'Web',
-            'date' => '15/04/2023',
-            'status' => 'Publié'
-        ],
-        [
-            'id' => 2,
-            'image' => 'https://via.placeholder.com/100x60',
-            'title' => 'Application Mobile',
-            'description' => 'Application de fitness',
-            'category' => 'Mobile',
-            'date' => '02/03/2023',
-            'status' => 'Publié'
-        ],
-        [
-            'id' => 3,
-            'image' => 'https://via.placeholder.com/100x60',
-            'title' => 'Blog Personnel',
-            'description' => 'Blog avec CMS',
-            'category' => 'Web',
-            'date' => '18/01/2023',
-            'status' => 'Brouillon'
-        ],
-        [
-            'id' => 4,
-            'image' => 'https://via.placeholder.com/100x60',
-            'title' => 'Portfolio Design',
-            'description' => 'Design UI/UX',
-            'category' => 'Design',
-            'date' => '05/12/2022',
-            'status' => 'Archivé'
-        ]
-    ];
-
-    /**
-     * Affiche la liste des projets
-     */
     public function index()
     {
-        $projects = $this->projects;
-        $unreadMessagesCount = 3; // Pour la sidebar
-        
-        return view('admin.projects.index', compact('projects', 'unreadMessagesCount'));
+        $projects = Project::latest()->paginate(10);
+        return view('admin.projects.index', compact('projects'));
     }
 
-    /**
-     * Affiche le formulaire de création
-     */
     public function create()
     {
-        $unreadMessagesCount = 3; // Pour la sidebar
-        return view('admin.projects.create', compact('unreadMessagesCount'));
+        return view('admin.projects.create');
     }
 
-    /**
-     * Enregistre un nouveau projet
-     */
     public function store(Request $request)
     {
-        // Simuler l'enregistrement
-        return redirect()->route('admin.projects.index')
-            ->with('success', 'Projet créé avec succès!');
-    }
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'required|string',
+            'status' => 'required|string|in:Publié,Brouillon,Archivé',
+            'image_url' => 'nullable|url',
+            'image_file' => 'nullable|image',
+            'date' => 'nullable|date',
+        ]);
 
-    /**
-     * Affiche un projet spécifique
-     */
-    public function show($id)
-    {
-        $project = $this->findProject($id);
-        $unreadMessagesCount = 3; // Pour la sidebar
-        
-        return view('admin.projects.show', compact('project', 'unreadMessagesCount'));
-    }
+        // Détection de l'image
+        $imagePath = null;
 
-    /**
-     * Affiche le formulaire d'édition
-     */
-    public function edit($id)
-    {
-        $project = $this->findProject($id);
-        $unreadMessagesCount = 3; // Pour la sidebar
-        
-        return view('admin.projects.edit', compact('project', 'unreadMessagesCount'));
-    }
-
-    /**
-     * Met à jour un projet
-     */
-    public function update(Request $request, $id)
-    {
-        // Simuler la mise à jour
-        return redirect()->route('admin.projects.index')
-            ->with('success', 'Projet mis à jour avec succès!');
-    }
-
-    /**
-     * Supprime un projet
-     */
-    public function destroy($id)
-    {
-        // Simuler la suppression
-        return redirect()->route('admin.projects.index')
-            ->with('success', 'Projet supprimé avec succès!');
-    }
-
-    /**
-     * Trouve un projet par son ID
-     */
-    private function findProject($id)
-    {
-        foreach ($this->projects as $project) {
-            if ($project['id'] == $id) {
-                return $project;
-            }
+        if ($request->hasFile('image_file')) {
+            $imagePath = $request->file('image_file')->store('projects', 'public.images');
+        } elseif ($request->filled('image_url')) {
+            $imagePath = $request->input('image_url');
         }
-        
-        abort(404);
+
+        $validated['image'] = $imagePath;
+
+        Project::create($validated);
+
+        return redirect()->route('admin.projects.index')->with('success', 'Projet créé avec succès.');
+    }
+
+    public function edit(Project $project)
+    {
+        return view('admin.projects.edit', compact('project'));
+    }
+
+    public function show(Project $project)
+    {
+        return view('admin.projects.show', compact('project'));
+    }
+
+    public function update(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'required|string',
+            'status' => 'required|string|in:Publié,Brouillon,Archivé',
+            'image_url' => 'nullable|url',
+            'image_file' => 'nullable|image',
+            'date' => 'nullable|date',
+        ]);
+
+        // Suppression ancienne image si nouvelle image uploadée
+        if ($request->hasFile('image_file')) {
+            if ($project->image && Storage::disk('public')->exists($project->image)) {
+                Storage::disk('public')->delete($project->image);
+            }
+            $validated['image'] = $request->file('image_file')->store('projects', 'public');
+        } elseif ($request->filled('image_url')) {
+            $validated['image'] = $request->input('image_url');
+        }
+
+        $project->update($validated);
+
+        return redirect()->route('admin.projects.index')->with('success', 'Projet mis à jour avec succès.');
+    }
+
+    public function destroy(Project $project)
+    {
+        if ($project->image && Storage::disk('public')->exists($project->image)) {
+            Storage::disk('public')->delete($project->image);
+        }
+
+        $project->delete();
+
+        return redirect()->route('admin.projects.index')->with('success', 'Projet supprimé.');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\ServiceController;
 
 // Page d’accueil : redirige vers login
 Route::get('/', function () {
@@ -26,6 +27,8 @@ Route::get('/dashboard', function () {
 // Routes back-office (admin) protégées par auth
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class);
 
     Route::resource('projects', ProjectController::class);
     Route::resource('messages', MessageController::class);

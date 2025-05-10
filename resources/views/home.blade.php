@@ -43,7 +43,7 @@
             <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">À propos de moi</h2>
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-8 md:mb-0">
-                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Photo de profil" class="rounded-lg shadow-lg mx-auto">
+                    <img src="{{ asset('/images/no-photo.jpg')}}" alt="Photo de profil" class="rounded-lg shadow-lg mx-auto">
                 </div>
                 <div class="md:w-1/2 md:pl-12">
                     <p class="text-gray-600 mb-6">
@@ -77,7 +77,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Projet 1 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Projet 1" class="w-full h-48 object-cover">
+                    <img src="{{ asset('/images/no-photo.jpg')}}" alt="Projet 1" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Projet E-commerce</h3>
                         <p class="text-gray-600 mb-4">Site web e-commerce développé avec Laravel et Vue.js</p>
@@ -92,7 +92,7 @@
                 
                 <!-- Projet 2 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Projet 2" class="w-full h-48 object-cover">
+                    <img src="{{ asset('/images/no-photo.jpg')}}" alt="Projet 2" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Application Mobile</h3>
                         <p class="text-gray-600 mb-4">Application mobile de suivi de fitness avec API Laravel</p>
@@ -107,7 +107,7 @@
                 
                 <!-- Projet 3 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('public/no_photo.jpg') }}" alt="Projet 3" class="w-full h-48 object-cover">
+                    <img src="{{ asset('/images/no-photo.jpg')}}" alt="Projet 3" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Blog Personnel</h3>
                         <p class="text-gray-600 mb-4">Blog avec système de gestion de contenu personnalisé</p>
