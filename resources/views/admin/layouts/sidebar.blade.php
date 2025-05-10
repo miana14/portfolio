@@ -1,21 +1,23 @@
 <aside id="sidebar" class="sidebar bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 fixed md:relative h-full z-10">
     <div class="p-6">
         <div class="flex items-center justify-center mb-8">
-            <img src="https://via.placeholder.com/60" alt="Logo" class="h-10 w-10 rounded-full mr-3">
-            <span class="text-xl font-bold">MonPortfolio</span>
+            <button class="focus:outline-none flex items-center space-x-3">
+                <i class="fas fa-address-card text-xl"></i>
+                <span class="text-xl font-bold">MonPortfolio</span>
+            </button>
         </div>
         <nav>
             <ul class="space-y-2">
                 <li>
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 {{ request()->routeIs('dashboard') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
-                        <i class="fas fa-table"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 {{ request()->routeIs('admin.dashboard') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Tableau de bord</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 {{ request()->routeIs('dashboard') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
+                        <i class="fas fa-table"></i>
+                        <span>Dashboard</span>
                     </a>
                 </li>
                 <li>

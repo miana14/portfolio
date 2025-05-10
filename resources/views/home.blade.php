@@ -74,54 +74,33 @@
     <section id="projets" class="py-20 bg-gray-100">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Mes Projets</h2>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Projet 1 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('/images/no-photo.jpg')}}" alt="Projet 1" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Projet E-commerce</h3>
-                        <p class="text-gray-600 mb-4">Site web e-commerce développé avec Laravel et Vue.js</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Laravel</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Vue.js</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">MySQL</span>
+                @forelse($projects as $project)
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
+                        <img src="{{ $project->image_url }}" alt="{{ $project->title }}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $project->title }}</h3>
+                            <p class="text-gray-600 mb-4">{{ Str::limit($project->description, 100) }}</p>
+
+                            @if($project->category)
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">{{ $project->category }}</span>
+                            </div>
+                            @endif
+
+                            <a href="{{ route('admin.projects.show', $project) }}" class="text-purple-600 hover:text-purple-800 font-medium">
+                                Voir le projet →
+                            </a>
                         </div>
-                        <a href="#" class="text-purple-600 hover:text-purple-800 font-medium">Voir le projet →</a>
                     </div>
-                </div>
-                
-                <!-- Projet 2 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('/images/no-photo.jpg')}}" alt="Projet 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Application Mobile</h3>
-                        <p class="text-gray-600 mb-4">Application mobile de suivi de fitness avec API Laravel</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Laravel</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">React Native</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">API REST</span>
-                        </div>
-                        <a href="#" class="text-purple-600 hover:text-purple-800 font-medium">Voir le projet →</a>
-                    </div>
-                </div>
-                
-                <!-- Projet 3 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                    <img src="{{ asset('/images/no-photo.jpg')}}" alt="Projet 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Blog Personnel</h3>
-                        <p class="text-gray-600 mb-4">Blog avec système de gestion de contenu personnalisé</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Laravel</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Tailwind CSS</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Alpine.js</span>
-                        </div>
-                        <a href="#" class="text-purple-600 hover:text-purple-800 font-medium">Voir le projet →</a>
-                    </div>
-                </div>
+                @empty
+                    <p class="text-center text-gray-500 col-span-3">Aucun projet à afficher pour le moment.</p>
+                @endforelse
             </div>
         </div>
     </section>
+
 
     <!-- Section Compétences -->
     <section id="competences" class="py-20 bg-white">

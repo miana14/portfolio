@@ -32,16 +32,8 @@ class ProjectController extends Controller
             'date' => 'nullable|date',
         ]);
 
-        // Détection de l'image
-        $imagePath = null;
-
-        if ($request->hasFile('image_file')) {
-            $imagePath = $request->file('image_file')->store('projects', 'public.images');
-        } elseif ($request->filled('image_url')) {
-            $imagePath = $request->input('image_url');
-        }
-
-        $validated['image'] = $imagePath;
+        // Gestion de l'image
+        $validated['image'] = $this->handleImageUpload($request);
 
         Project::create($validated);
 
@@ -70,14 +62,15 @@ class ProjectController extends Controller
             'date' => 'nullable|date',
         ]);
 
-        // Suppression ancienne image si nouvelle image uploadée
-        if ($request->hasFile('image_file')) {
-            if ($project->image && Storage::disk('public')->exists($project->image)) {
+        // Gestion de la nouvelle image
+        $newImagePath = $this->handleImageUpload($request);
+
+        if ($newImagePath) {
+            // Supprimer l’ancienne image locale uniquement
+            if ($project->image && !str_starts_with($project->image, 'http') && Storage::disk('public')->exists($project->image)) {
                 Storage::disk('public')->delete($project->image);
             }
-            $validated['image'] = $request->file('image_file')->store('projects', 'public');
-        } elseif ($request->filled('image_url')) {
-            $validated['image'] = $request->input('image_url');
+            $validated['image'] = $newImagePath;
         }
 
         $project->update($validated);
@@ -87,12 +80,28 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        if ($project->image && Storage::disk('public')->exists($project->image)) {
+        if ($project->image && !str_starts_with($project->image, 'http') && Storage::disk('public')->exists($project->image)) {
             Storage::disk('public')->delete($project->image);
         }
 
         $project->delete();
 
         return redirect()->route('admin.projects.index')->with('success', 'Projet supprimé.');
+    }
+
+    /**
+     * Gère l’upload ou l’URL de l’image du projet.
+     */
+    private function handleImageUpload(Request $request): ?string
+    {
+        if ($request->hasFile('image_file')) {
+            return $request->file('image_file')->store('projects', 'public');
+        }
+
+        if ($request->filled('image_url')) {
+            return $request->input('image_url');
+        }
+
+        return null;
     }
 }

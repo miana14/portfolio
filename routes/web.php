@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\FrontController;
+
 
 // Page d’accueil : redirige vers login
 Route::get('/', function () {
@@ -14,9 +16,7 @@ Route::get('/', function () {
 });
 
 // Portfolio public (one-page)
-Route::get('/portfolio', function () {
-    return view('home');
-})->name('portfolio');
+Route::get('/portfolio', [FrontController::class, 'portfolio'])->name('portfolio');
 
 
 // Dashboard après connexion (lien vers admin + vers portfolio possible)

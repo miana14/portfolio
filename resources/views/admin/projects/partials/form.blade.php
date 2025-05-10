@@ -61,7 +61,7 @@
 <!-- Image -->
 <div class="mb-6">
     <label for="image" class="block text-sm font-medium text-gray-700">Image du projet</label>
-    <input type="file" name="image" id="image"
+    <input type="file" name="image_file" id="image_file"
         class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
     @error('image')
         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>

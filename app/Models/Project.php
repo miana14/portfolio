@@ -21,7 +21,7 @@ class Project extends Model
     public function getImageUrlAttribute()
     {
         if (!$this->image) {
-            return asset('images/default-project.jpg'); // Image de fallback si manquante
+            return asset('images/no-photo.jpg'); // Image de fallback si manquante
         }
 
         if (Str::startsWith($this->image, 'http')) {
