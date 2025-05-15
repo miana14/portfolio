@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\QuoteRequestController;
-use App\Http\Controllers\FrontQuoteController;
 use App\Http\Controllers\FrontController;
 
 
@@ -37,7 +36,7 @@ Route::get('/quote-request', function () {
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class);
+    Route::resource('services', ServiceController::class);
 
     Route::resource('projects', ProjectController::class);
     Route::resource('messages', MessageController::class);

@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Service;
+use App\Models\Project;
 
 class FrontController extends Controller
 {
-    //
     public function portfolio()
-{
-    $projects = \App\Models\Project::where('status', 'Publié')->latest()->get();
-    return view('home', compact('projects'));
-}
+    {
+        $services = Service::all();
+        $projects = Project::all();
+
+        return view('home', compact('services', 'projects'));
+    }
 }
