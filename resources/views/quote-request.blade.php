@@ -1,5 +1,3 @@
-<x-app-layout>
-
 <div id="devis" class="py-20 bg-gray-100">
     <div class="container mx-auto px-6">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Calculatrice de devis estimatif</h2>
@@ -64,4 +62,3 @@
         </div>
     </div>
 </div>
-
