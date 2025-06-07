@@ -1,4 +1,4 @@
-<aside id="sidebar" class="sidebar bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 fixed md:relative h-full z-10">
+<aside id="sidebar" class="sidebar bg-gray-800 shrink-0 text-white w-64 md:w-64 md:translate-x-0 fixed md:relative h-full z-10">
     <div class="p-6">
         <div class="flex items-center justify-center mb-8">
             <button class="focus:outline-none flex items-center space-x-3">

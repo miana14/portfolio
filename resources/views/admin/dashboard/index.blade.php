@@ -62,6 +62,21 @@
         <p class="text-red-500 text-sm mt-4"><i class="fas fa-arrow-down mr-1"></i> -5% ce mois</p>
     </div>
 </div>
+<!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Visites mensuelles</h2>
+                        <div class="h-64">
+                            <canvas id="visitorsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Répartition des projets</h2>
+                        <div class="h-64">
+                            <canvas id="projectsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
 
 <!-- Recent Activity -->
 <div class="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -111,4 +126,76 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Reste du contenu comme dans le HTML original, adapté avec des variables Blade -->
 </div>
+
+<script>
+        // Visitors Chart
+        const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+        const visitorsChart = new Chart(visitorsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                datasets: [{
+                    label: 'Visites 2023',
+                    data: [1200, 1900, 2300, 2800, 2400, 2700, 3000, 3200, 3500, 3700, 4000, 4200],
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Projects Chart
+        const projectsCtx = document.getElementById('projectsChart').getContext('2d');
+        const projectsChart = new Chart(projectsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Web Development', 'Mobile Apps', 'UI/UX Design', 'Branding'],
+                datasets: [{
+                    data: [8, 4, 3, 1],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(239, 68, 68, 0.8)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+        </script>
 @endsection
