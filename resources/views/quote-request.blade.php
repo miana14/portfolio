@@ -1,3 +1,4 @@
+<x-app-layout>
 
 <div id="devis" class="py-20 bg-gray-100">
     <div class="container mx-auto px-6">
@@ -62,4 +63,4 @@
         </div>
     </div>
 </div>
-
+</x-app-layout>

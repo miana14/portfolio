@@ -40,6 +40,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class);
 
     Route::resource('projects', ProjectController::class);
+    
     Route::resource('messages', MessageController::class);
     Route::post('/messages/{id}/mark-as-read', [MessageController::class, 'markAsRead'])->name('messages.mark-as-read');
 

@@ -415,8 +415,6 @@
             container.innerHTML = '<p class="text-red-600">Erreur lors du chargement des services.</p>';
             console.error(error);
         });
-
-        
 });
     </script>
 </body>

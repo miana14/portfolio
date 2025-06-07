@@ -32,6 +32,12 @@
                         <span>Projets</span>
                     </a>
                 </li>
+                {{-- <li>
+                    <a href="{{ route('admin.quotes.index') }}" class="flex items-center space-x-3 {{ request()->routeIs('admin.quotes.*') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
+                        <i class="fa-solid fa-file"></i>
+                        <span>Devis</span>
+                    </a>
+                </li> --}}
                 <li>
                     <a href="{{ route('admin.messages.index') }}" class="flex items-center space-x-3 {{ request()->routeIs('admin.messages.*') ? 'text-purple-400 bg-gray-700' : 'text-gray-300 hover:bg-gray-700' }} rounded-lg px-4 py-3 transition">
                         <i class="fas fa-envelope"></i>
