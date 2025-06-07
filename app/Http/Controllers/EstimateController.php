@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ServiceController;
+use App\Models\QuoteRequest;
 use App\Models\Service;
 
 
