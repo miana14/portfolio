@@ -1,4 +1,4 @@
-<div id="devis" class="py-20 bg-gray-100">
+<section id="devis" class="py-20 bg-gray-100">
     <div class="container mx-auto px-6">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Calculatrice de devis estimatif</h2>
         <p class="text-center mb-6 text-gray-600">Sélectionnez les services souhaités et envoyez votre demande :</p>
@@ -61,4 +61,78 @@
             </form>
         </div>
     </div>
-</div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('services-container');
+        const totalSpan = document.getElementById('total-price');
+        const totalHidden = document.getElementById('total-hidden');
+        const hiddenInputsWrapper = document.getElementById('services-hidden-inputs');
+
+        function updateEstimate() {
+            const checked = document.querySelectorAll('.service-checkbox:checked');
+            const serviceIds = Array.from(checked).map(cb => parseInt(cb.dataset.id));
+
+            // MAJ champs cachés pour l'envoi du formulaire
+            hiddenInputsWrapper.innerHTML = '';
+            serviceIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'services[]';
+                input.value = id;
+                hiddenInputsWrapper.appendChild(input);
+            });
+
+            // Appel API pour estimer le total
+            fetch('/api/estimate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ services: serviceIds })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.total !== undefined) {
+                    totalSpan.innerText = data.total.toFixed(2);
+                    totalHidden.value = data.total.toFixed(2);
+                } else {
+                    totalSpan.innerText = 'Erreur dans la réponse';
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                totalSpan.innerText = 'Erreur de calcul';
+            });
+        }
+
+        fetch('{{ url('/api/services') }}')
+            .then(response => response.json())
+            .then(data => {
+                const services = data.member;
+                services.forEach(service => {
+                    const div = document.createElement('div');
+                    div.className = 'border p-4 rounded-lg shadow hover:shadow-lg transition cursor-pointer bg-white flex items-center justify-between';
+                    div.innerHTML = `
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800">${service.title}</h3>
+                            <p class="text-gray-600 mb-1">${service.description}</p>
+                            <span class="text-purple-600 font-semibold">${parseFloat(service.price).toFixed(2)} €</span>
+                        </div>
+                        <input type="checkbox" class="service-checkbox ml-4" data-id="${service.id}" data-price="${service.price}">
+                    `;
+                    container.appendChild(div);
+                });
+
+                document.querySelectorAll('.service-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', updateEstimate);
+                });
+            })
+            .catch(error => {
+                container.innerHTML = '<p class="text-red-600">Erreur lors du chargement des services.</p>';
+                console.error(error);
+            });
+    });
+</script>
