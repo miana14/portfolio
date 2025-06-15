@@ -2,20 +2,26 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UnifiedApiController;
 use App\Http\Controllers\QuoteRequestController;
 use App\Http\Controllers\EstimateController;
+use App\Models\User;
 
-// Récupération de l'utilisateur connecté via Sanctum
+// Authentification API
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// Donne les infos de l’utilisateur connecté
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return response()->json($request->user());
 });
 
-// Routes publiques d'accès aux données (lecture uniquement)
+// Routes publiques
 Route::get('/', [UnifiedApiController::class, 'index']);
+Route::post('/estimate', [EstimateController::class, 'calculate']);
 
-// Routes protégées : estimation et envoi de devis
+// Routes protégées par token
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/estimate', [EstimateController::class, 'calculate']);
     Route::post('/quote-request', [QuoteRequestController::class, 'send']);
 });

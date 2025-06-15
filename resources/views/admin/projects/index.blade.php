@@ -16,23 +16,39 @@
 <div class="bg-white rounded-lg shadow-md p-6 mb-8">
     <form method="GET" action="{{ route('admin.projects.index') }}">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div class="flex flex-col md:flex-row gap-4 md:items-center">
-                <div class="relative">
+            <div class="flex flex-col md:flex-row gap-4 md:items-center w-full">
+                <div class="relative w-full md:w-64">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-search text-gray-400"></i>
                     </div>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un projet..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 w-full md:w-64">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Rechercher un projet..."
+                        class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 w-full"
+                    >
                 </div>
-                <select name="category" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
-                    <option value="">Toutes les catégories</option>
-                    <option value="Web" {{ request('category') == 'Web' ? 'selected' : '' }}>Développement Web</option>
-                    <option value="Mobile" {{ request('category') == 'Mobile' ? 'selected' : '' }}>Application Mobile</option>
-                    <option value="Design" {{ request('category') == 'Design' ? 'selected' : '' }}>Design</option>
-                </select>
+
+                <div class="w-full md:w-auto">
+                    <select name="category" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 w-full md:w-auto">
+                        <option value="">Toutes les catégories</option>
+                        <option value="Web" {{ request('category') == 'Web' ? 'selected' : '' }}>Développement Web</option>
+                        <option value="Mobile" {{ request('category') == 'Mobile' ? 'selected' : '' }}>Application Mobile</option>
+                        <option value="Design" {{ request('category') == 'Design' ? 'selected' : '' }}>Design</option>
+                    </select>
+                </div>
             </div>
-            <button type="submit" class="px-4 py-2 border rounded-lg hover:bg-gray-50 transition">
-                <i class="fas fa-filter mr-2"></i> Filtrer
-            </button>
+
+            <div class="flex gap-2">
+                <button type="submit" class="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">
+                    <i class="fas fa-search text-sm"></i>
+                    <span>Rechercher</span>
+                </button>
+                <a href="{{ route('admin.projects.index') }}" class="px-4 py-2 border text-gray-600 rounded hover:bg-gray-50 transition">
+                    Réinitialiser
+                </a>
+            </div>
         </div>
     </form>
 </div>

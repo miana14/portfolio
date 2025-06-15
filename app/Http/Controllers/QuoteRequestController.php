@@ -8,6 +8,22 @@ use Illuminate\Http\Request;
 
 class QuoteRequestController extends Controller
 {
+    public function index()
+{
+    // Ceci est pour le back office
+    $requests = \App\Models\QuoteRequest::with('services')->latest()->get();
+
+    return view('admin.quote-requests.index', compact('requests'));
+}
+
+public function showForm()
+{
+    // Ceci est pour le front (portfolio)
+    $services = \App\Models\Service::all();
+    return view('quote-request', compact('services'));
+}
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([

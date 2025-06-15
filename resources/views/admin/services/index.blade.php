@@ -3,34 +3,6 @@
 @section('title', 'Services')
 
 @section('content')
-<!-- Filters -->
-<div class="bg-white rounded-lg shadow-md p-6 mb-8">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div class="flex flex-col md:flex-row gap-4 md:items-center">
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-search text-gray-400"></i>
-                </div>
-                <input type="text" placeholder="Rechercher un projet..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 w-full md:w-64">
-            </div>
-            <select class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
-                <option value="">Toutes les catégories</option>
-                <option value="web">Développement Web</option>
-                <option value="mobile">Application Mobile</option>
-                <option value="design">Design</option>
-            </select>
-        </div>
-        <div class="flex items-center gap-2">
-            <button class="px-4 py-2 border rounded-lg hover:bg-gray-50 transition">
-                <i class="fas fa-sort-amount-down mr-2"></i> Trier
-            </button>
-            <button class="px-4 py-2 border rounded-lg hover:bg-gray-50 transition">
-                <i class="fas fa-filter mr-2"></i> Filtrer
-            </button>
-        </div>
-    </div>
-</div>
-
 <div class="flex justify-between items-center mb-6">
     <div>
         <h2 class="text-2xl font-bold text-gray-800">Services</h2>
@@ -41,8 +13,35 @@
     </a>
 </div>
 
-<div class="bg-white shadow rounded-lg p-4">
-    <table class="w-full table-auto">
+<!-- Filters -->
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <form method="GET" action="{{ route('admin.services.index') }}">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex flex-col md:flex-row gap-4 md:items-center">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400 text-sm"></i>
+                    </div>
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Rechercher un service..."
+                        class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 w-full md:w-64"
+                    >
+                </div>
+                <button type="submit" class="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">
+                    <i class="fas fa-search text-sm"></i>
+                    <span>Rechercher</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Tableau avec scroll horizontal -->
+<div class="bg-white shadow rounded-lg p-4 overflow-x-auto">
+    <table class="w-full min-w-[500px] table-auto">
         <thead>
             <tr class="text-left bg-gray-100">
                 <th class="px-4 py-2">Titre</th>

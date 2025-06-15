@@ -7,36 +7,42 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    // Données en dur pour les paramètres
-    private $settings = [
-        'site_name' => 'MonPortfolio',
-        'site_description' => 'Portfolio personnel de développement web',
-        'contact_email' => 'contact@monportfolio.com',
-        'footer_text' => '© 2023 MonPortfolio. Tous droits réservés.',
-        'theme_color' => 'purple',
-        'enable_blog' => true,
-        'projects_per_page' => 6,
-        'google_analytics_id' => 'UA-XXXXXXXXX-X'
+    // Données simulées pour les paramètres du site (peuvent être remplacées par une DB plus tard)
+    private array $defaultSettings = [
+        'site_title' => 'MonPortfolio',
+        'favicon' => 'favicon.ico',
+        'seo_keywords' => 'portfolio, développeur web',
+        'footer_text' => '© 2025 MonPortfolio. Tous droits réservés.',
     ];
 
     /**
-     * Affiche la page des paramètres
+     * Affiche la page des paramètres du site
      */
     public function index()
     {
-        $settings = $this->settings;
-        $unreadMessagesCount = 3; // Pour la sidebar
-        
+        $settings = $this->defaultSettings;
+
+        // Exemple d'intégration de compteurs (messages non lus, etc.)
+        $unreadMessagesCount = 3;
+
         return view('admin.settings.index', compact('settings', 'unreadMessagesCount'));
     }
 
     /**
-     * Met à jour les paramètres
+     * Traite la mise à jour des paramètres (simulée ici)
      */
     public function update(Request $request)
     {
-        // Simuler la mise à jour
-        return redirect()->route('admin.settings')
-            ->with('success', 'Paramètres mis à jour avec succès!');
+        $validated = $request->validate([
+            'site_title'    => 'required|string|max:255',
+            'favicon'       => 'nullable|string|max:255',
+            'seo_keywords'  => 'nullable|string|max:255',
+            'footer_text'   => 'nullable|string|max:255',
+        ]);
+
+        // Simulation de sauvegarde en base ou fichier
+        // Exemple : Setting::updateMany($validated);
+
+        return redirect()->route('admin.settings')->with('success', 'Paramètres mis à jour avec succès !');
     }
 }

@@ -37,6 +37,39 @@
             @enderror
         </div>
 
+        <!-- Modification du mot de passe -->
+        <hr class="my-6">
+
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">Changer le mot de passe</h3>
+
+        <!-- Mot de passe actuel -->
+        <div class="mb-4">
+            <label for="current_password" class="block text-sm font-medium text-gray-700">Mot de passe actuel</label>
+            <input type="password" name="current_password" id="current_password"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
+            @error('current_password')
+                <div class="text-sm text-red-600 mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Nouveau mot de passe -->
+        <div class="mb-4">
+            <label for="new_password" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+            <input type="password" name="new_password" id="new_password"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
+            @error('new_password')
+                <div class="text-sm text-red-600 mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Confirmation -->
+        <div class="mb-4">
+            <label for="new_password_confirmation" class="block text-sm font-medium text-gray-700">Confirmer le nouveau mot de passe</label>
+            <input type="password" name="new_password_confirmation" id="new_password_confirmation"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:ring-purple-500 focus:border-purple-500">
+        </div>
+
+
         <!-- Bouton de soumission -->
         <div class="flex justify-end">
             <button type="submit"

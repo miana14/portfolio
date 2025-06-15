@@ -30,4 +30,11 @@ class Project extends Model
 
         return asset('storage/' . $this->image);
     }
+    
+    protected static function booted()
+    {
+        static::creating(function ($project) {
+            $project->slug = Str::slug($project->title);
+        });
+    }
 }

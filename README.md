@@ -1,61 +1,151 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Mon Portfolio Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ce projet est un **portfolio dynamique** développé avec **Laravel**, servant à présenter mes réalisations professionnelles, mes compétences, et permettre aux utilisateurs de me contacter ou demander un devis via une interface claire, moderne et responsive.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fonctionnalités principales
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Front Office
+- Page d’accueil **one-page** avec sections dynamiques : Projets, Compétences, Contact.
+- Page **détail de chaque projet** accessible via un lien unique.
+- Formulaire de contact avec envoi d’e-mail via SMTP.
+- Calculatrice de **devis estimatif dynamique**.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Back Office (Admin)
+- Tableau de bord dynamique avec **statistiques** (projets, services, devis, etc.).
+- Gestion des **projets** (CRUD complet).
+- Gestion des **services** proposés (CRUD complet).
+- Gestion des **devis** envoyés via le front (CRUD lecture uniquement).
+- Interface propre en **Tailwind CSS**, avec design responsive et moderne.
+- Gestion du **profil utilisateur** et des paramètres généraux du site.
+- Sidebar responsive fixe pour la navigation admin.
 
-## Learning Laravel
+### Contact
+- Formulaire de contact avec :
+  - Validation côté serveur
+  - Notification de succès/erreur
+  - Envoi d’email via SMTP (testé avec Gmail)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### API
+- Endpoint `GET /api` via **API Platform** (ou contrôleur API Laravel si standalone).
+- JSON retournant tous les services, devis et projets disponibles.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+##  Technologies utilisées
 
-## Laravel Sponsors
+- **Laravel 10**
+- **Blade** (moteur de template)
+- **Tailwind CSS** pour le back-office
+- **FontAwesome** pour les icônes
+- **Chart.js** pour les graphiques du dashboard
+- **Eloquent ORM**
+- **SQLite** en développement
+- **API REST** via contrôleurs Laravel
+- **Mailable** pour le formulaire de contact
+- **Seeder + Factory** pour les données de démonstration
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Installation & Lancement
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+### 1. Cloner le dépôt
 
-## Contributing
+```bash
+git clone https://github.com/ton-utilisateur/portfolio.git
+cd portfolio
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Installer les dépendances PHP
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Configurer l’environnement
 
-## Security Vulnerabilities
+Copier le fichier `.env.example` :
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+```
 
-## License
+Générer la clé d'application :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+Configurer dans `.env` :
+- `DB_CONNECTION=sqlite`
+- `DB_DATABASE=/chemin/vers/database/database.sqlite`
+- `MAIL_MAILER=smtp`
+- `MAIL_HOST=smtp.gmail.com`
+- `MAIL_PORT=587`
+- `MAIL_USERNAME=tonemail@gmail.com`
+- `MAIL_PASSWORD=mot_de_passe_application`
+- `MAIL_ENCRYPTION=tls`
+
+Créer le fichier SQLite :
+
+```bash
+touch database/database.sqlite
+```
+
+### 4. Lancer les migrations et seeders
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 5. Lier le dossier `storage`
+
+```bash
+php artisan storage:link
+```
+
+### 6. Démarrer le serveur
+
+```bash
+php artisan serve
+```
+
+---
+
+## Accès admin
+
+Un utilisateur admin peut être créé avec :
+- Email : `admin@example.com`
+- Mot de passe : `password` (via `tinker` ou enregistrement manuel)
+
+---
+
+## Structure principale
+
+```
+app/
+    Http/Controllers/ (front, admin, api)
+    Models/ (Project, Service, Skill, QuoteRequest)
+resources/views/
+    layouts/
+    admin/
+    public home.blade.php
+routes/
+    web.php
+    api.php
+database/
+    migrations/
+    seeders/
+```
+
+---
+
+## Améliorations possibles
+
+- Ajouter un système de **tracking de visiteurs**.
+- Statistiques avancées dans le dashboard (visites réelles, évolution des projets).
+- Intégrer une authentification API + documentation Swagger avec Laravel API Resources.
+- Upload d’images sécurisé dans les projets.
+
+

@@ -9,9 +9,19 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::latest()->paginate(10);
+        $query = Project::query();
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        $projects = $query->latest()->paginate(10);
         return view('admin.projects.index', compact('projects'));
     }
 
